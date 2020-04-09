@@ -1,4 +1,10 @@
 class UnionFindBase(object):
+    def __init__(self):
+        print("To initialise array: num [number of elements]")
+        print("To perform union: union [first element] [second element]")
+        print("To check if connected: connected [first element] [second element]")
+        print("To print number of components: components")
+
     def parse_input(self, data: str):
         payload = data.strip().split(" ")
         input_type = payload[0]
