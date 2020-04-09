@@ -1,27 +1,20 @@
 from base import UnionFindBase
 
 class QuickUnion(UnionFindBase):
-    def __init__(self):
-        super().__init__()
-        self.ids = []
-
-    def initialize(self, num: int):
-        for i in range(num):
-            self.ids.append(i)
-
-    def union(self, first: int, second: int):
+    def union(self, first: int, second: int) -> bool:
         first_root = self.__root(first)
         second_root = self.__root(second)
 
+        if first_root == second_root:
+            return False
+
         self.ids[first_root] = second_root
+        return True
     
     def connected(self, first: int, second: int) -> bool:
         return self.__root(first) == self.__root(second)
-
-    def components(self) -> int:
-        return len([i for i in range(len(self.ids)) if self.ids[i] == i])
     
-    # Recursive root finding
+    # Recursive root finding because why not
     def __root(self, id: int) -> int:
         p = self.ids[id]
         if p != id:
