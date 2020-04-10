@@ -10,7 +10,7 @@ class QuickFind(UnionFindBase):
         
         # If any element belongs to the first group change it to the second
         self.ids = [second_id if id == first_id else id for id in self.ids]
-        return True
+        self.components -= 1
     
     def connected(self, first: int, second: int) -> bool:
         return self.ids[first] == self.ids[second]

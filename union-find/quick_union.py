@@ -9,7 +9,7 @@ class QuickUnion(UnionFindBase):
             return False
 
         self.ids[first_root] = second_root
-        return True
+        self.components -= 1
     
     def connected(self, first: int, second: int) -> bool:
         return self.__root(first) == self.__root(second)

@@ -1,9 +1,10 @@
 class UnionFindBase(object):
-    def __init__(self):
+    def __init__(self, instructions=True):
         self.ids = []
         self.components = 0
 
-        self.__print_instructions()
+        if instructions:
+            self.__print_instructions()
 
     def __print_instructions(self):
         print("To initialise array: num [number of elements]")
@@ -17,16 +18,10 @@ class UnionFindBase(object):
 
         if (input_type == "num"):
             num_elements = int(payload[1])
-            self.components = num_elements
             self.initialize(num_elements)
 
         elif (input_type == "union"):
             first, second = int(payload[1]), int(payload[2])
-
-            # If union is successful there is one less component
-            if self.union(first, second):
-                self.components -= 1
-             
 
         elif (input_type == "connected"):
             first, second = int(payload[1]), int(payload[2])
@@ -35,9 +30,9 @@ class UnionFindBase(object):
         elif (input_type == "count"):
             print("Number of components: {}".format(self.components))
 
-
     def initialize(self, num: int):
-         for i in range(num):
+        self.components = num
+        for i in range(num):
             self.ids.append(i)
 
     def union(self, first: int, second: int) -> bool:

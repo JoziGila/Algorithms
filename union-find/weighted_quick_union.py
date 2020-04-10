@@ -1,8 +1,8 @@
 from base import UnionFindBase
 
-class QuickUnion(UnionFindBase):
-    def __init__(self):
-        super().__init__()
+class WeightedQuickUnion(UnionFindBase):
+    def __init__(self, instructions=True):
+        super().__init__(instructions)
         self.tree_sizes = []
 
     def initialize(self, num: int):
@@ -26,7 +26,7 @@ class QuickUnion(UnionFindBase):
             self.ids[second_root] = first_root
             self.tree_sizes[first_root] += second_tree_size
 
-        return True
+        self.components -= 1
 
     def connected(self, first: int, second: int) -> bool:
         return self.__root(first) == self.__root(second)
@@ -42,7 +42,7 @@ class QuickUnion(UnionFindBase):
 
 
 if __name__ == "__main__":
-    algorithm = QuickUnion()
+    algorithm = WeightedQuickUnion()
 
     while True:
         algorithm.parse_input(input())
