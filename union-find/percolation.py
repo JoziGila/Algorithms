@@ -3,7 +3,7 @@ from random import randint
 from typing import List
 
 class Percolation:
-    def __init__(self, num: int):
+    def __init__(self, num: int, logging=False):
         self.num = num
         self.wqu = WeightedQuickUnion(instructions=False)
 
@@ -11,6 +11,12 @@ class Percolation:
         self.wqu.initialize(self.grid_elements + 2) # Create grid and add two virtual nodes
         self.__connect_virtual_nodes() # Connect virtual nodes to top and bottom rows
         self.open = [False] * self.grid_elements # Keep track of open element indices in grid
+
+        self.logging = logging
+        self.log = []
+
+        if self.logging:
+            self.log.append("num {}".format(str(self.num)))
 
     def percolate(self) -> float:
         open_count = 0
@@ -20,7 +26,17 @@ class Percolation:
             open_count += 1
             percolated = self.__check_percolate()
 
+        # Log open operation
+        if self.logging:
+            self.log.append("percolation {}".format(",".join(str(x) for x in self.wqu.get_tree(self.grid_elements))))
+            self.save_log()
+
         return open_count / self.grid_elements
+
+    def save_log(self):
+        with open('percolation_log.txt', 'w') as f:
+            for log in self.log:
+                f.write("%s\n" % log)
     
     def __open(self, index: int):
         # Open index and connect with open neighbours
@@ -29,6 +45,10 @@ class Percolation:
 
         for n in neighbours:
             self.wqu.union(index, n)
+        
+        # Log open operation
+        if self.logging:
+            self.log.append("open {}".format(index))
 
     def __open_random(self):
         # Select random index and open if closed
@@ -80,5 +100,5 @@ class Percolation:
             self.wqu.union(-1, -3 - i) # Start from the third last element
 
 if __name__ == "__main__":
-    p = Percolation(1000)
+    p = Percolation(10, logging=True)
     print(p.percolate())

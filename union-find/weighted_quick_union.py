@@ -31,11 +31,24 @@ class WeightedQuickUnion(UnionFindBase):
     def connected(self, first: int, second: int) -> bool:
         return self.__root(first) == self.__root(second)
 
+    def get_tree(self, node):
+        node_root = self.__root(node)
+        children = self.get_children(node_root) + [node_root]
+        return children
+
+    def get_children(self, node, elements=[]):
+        children = [i for i, e in enumerate(self.ids) if e == node and i != e]
+
+        for ch in children:
+            children = children + self.get_children(ch, elements)
+
+        return children
+        
     def __root(self, id: int) -> int:
         p = self.ids[id]
         if p != id:
             root = self.__root(p)
-            self.ids[id] = root
+            #self.ids[id] = root
             return root
         else:
             return id
