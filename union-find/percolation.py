@@ -11,6 +11,7 @@ class Percolation:
         self.wqu.initialize(self.grid_elements + 2) # Create grid and add two virtual nodes
         self.__connect_virtual_nodes() # Connect virtual nodes to top and bottom rows
         self.open = [False] * self.grid_elements # Keep track of open element indices in grid
+        self.closed_ids = [i for i in range(self.grid_elements)] # To easily select opening
 
         self.logging = logging
         self.log = []
@@ -51,12 +52,11 @@ class Percolation:
             self.log.append("open {}".format(index))
 
     def __open_random(self):
-        # Select random index and open if closed
-        random_index = -1
-        while random_index == -1 or self.open[random_index]:
-            random_index = randint(0, self.grid_elements - 1)
+        random_index = randint(0, len(self.closed_ids) - 1)
+        random_id = self.closed_ids[random_index]
 
-        self.__open(random_index)
+        self.__open(random_id)
+        del self.closed_ids[random_index]
 
     def __get_open_neighbours(self, index: int) -> List[int]:
         # Return list of neighbourhood indices
