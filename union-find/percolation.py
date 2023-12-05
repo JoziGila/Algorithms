@@ -86,6 +86,10 @@ class Percolation:
                     open_flat_indices.append(flat_index)
 
         return open_flat_indices
+    
+    def __get_neighbours(self, index: int) -> List[int]:
+        # Return list of neighbourhood indices
+        neighbours = [[index // self.num, index % self.num] for _ in range(4)]
 
     def __check_percolate(self) -> bool:
         return self.wqu.connected(-1, -2)
