@@ -58,34 +58,6 @@ class Percolation:
         self.__open(random_id)
         del self.closed_ids[random_index]
 
-    def __get_open_neighbours(self, index: int) -> List[int]:
-        # Return list of neighbourhood indices
-        neighbours = [[index // self.num, index % self.num] for _ in range(4)] # Create four neighbours
-
-        # Top, bottom
-        neighbours[0][0] = neighbours[0][0] - 1
-        neighbours[1][0] = neighbours[1][0] + 1
-
-        # Left, right
-        neighbours[2][1] = neighbours[2][1] - 1
-        neighbours[3][1] = neighbours[3][1] + 1
-
-        # Keep only indices that are within the grid and are open
-        open_flat_indices = []
-        for n in neighbours:
-            # If any of the indices is out of bound discard neighbour
-            keep = True
-            for i in n:
-                if i < 0 or i >= self.num:
-                    keep = False
-                    break
-            
-            if keep:
-                flat_index = n[0] * self.num + n[1]
-                if self.open[flat_index]:
-                    open_flat_indices.append(flat_index)
-
-        return open_flat_indices
 
     def __check_percolate(self) -> bool:
         return self.wqu.connected(-1, -2)
